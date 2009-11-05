@@ -1,0 +1,11 @@
+### Monit Script - Apache 2.2 - Ubuntu 9.10 Server
+check process apache with pidfile /var/run/apache2.pid
+  group www
+  start program = "/etc/init.d/apache2 start"
+  stop program = "/etc/init.d/apache2 stop"
+  if cpu > 80% for 3 cycles then alert
+  if loadavg(5min) greater than 10 for 8 cycles then alert
+  if failed host localhost port 80 protocol http
+    and request "/" with timeout 45 seconds
+    then alert
+  if 5 restarts within 5 cycles then timeout
